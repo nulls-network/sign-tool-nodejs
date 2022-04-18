@@ -4,7 +4,8 @@
   "description": "",
   "main": "sign.js",
   "scripts": {
-    "run": "node ./test/index.js"
+    "sign": "node ./test/index.js",
+    "recover":"node ./test/recover.js"
   },
   "author": "",
   "license": "ISC",

@@ -4,20 +4,24 @@
 
 ## 安装
 
-- npm
-```
-    npm i ethers
-```
+依赖 ethers.js
 
-- yarn 
 ```
-yarn add ethers
+    npm i
 ```
 
 
 ## 运行
 
+- 生成签名
+
 ```
-node ./test/index.js
+node ./test/sign.js
+```
+
+- 反解公钥
+
+```
+node ./test/recover.js
 ```
 

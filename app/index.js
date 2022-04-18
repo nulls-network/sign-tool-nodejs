@@ -1,4 +1,4 @@
-const { concat, keccak256, toUtf8Bytes, SigningKey, joinSignature } = require("ethers").utils
+const { concat, keccak256, toUtf8Bytes, SigningKey, joinSignature, splitSignature, recoverAddress } = require("ethers").utils
 
 
 function toBytes(...params) {
@@ -30,6 +30,21 @@ async function doSign(info = [], privateKey) {
   }
 }
 
+function doRecover(bytesData, signature) {
+  try {
+    const sig = splitSignature(signature)
+    const recovered = recoverAddress(bytesData, sig)
+    return recovered
+  }
+  catch (e) {
+    return null
+  }
+}
+
+
+
 module.exports = {
-  doSign
+  doSign,
+  toBytes,
+  doRecover
 }
