@@ -4,7 +4,7 @@
   "description": "",
   "main": "sign.js",
   "scripts": {
-    "sign": "node ./test/index.js",
+    "sign": "node ./test/sign.js",
     "recover":"node ./test/recover.js"
   },
   "author": "",
