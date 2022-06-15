@@ -1,8 +1,11 @@
-const { doSign, toBytes, doRecover } = require('../app/index.js')
+const { doSignMessage } = require('../../app/index.js')
 
 
 async function test() {
-
+    /**
+     * 使用生成订单，作生成签名测试
+     * 请注意参数的顺序正确，不同的顺序会导致生成签名不一致
+     */
     const info = [
         '20220418104946',//订单号
         'tron',//固定参数
@@ -12,16 +15,8 @@ async function test() {
     ]
     const privateKey = 'f78494eb224f875d7e352a2b017304e11e6a3ce94af57b373ae82a73b3496cdd'
 
-    const result = await doSign(info, privateKey)
+    const result = await doSignMessage(info, privateKey)
     console.log('签名结果：', result)
-
-
-    /**
-     * 签名反解，得出公钥
-     */
-    const bytesData = toBytes(...info)
-    const pubkey = doRecover(bytesData, result)
-    console.log("反解出签名者的公钥：" + pubkey)
 }
 
 test()

@@ -1,4 +1,4 @@
-const { doSign } = require('../app/index.js')
+const { doSign } = require('../../app/index.js')
 
 
 async function test() {

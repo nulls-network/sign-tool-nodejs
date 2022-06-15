@@ -1,5 +1,5 @@
-const { concat, keccak256, toUtf8Bytes, SigningKey, joinSignature, splitSignature, recoverAddress } = require("ethers").utils
-
+const { ethers, Contract, utils } = require("ethers")
+const { concat, keccak256, toUtf8Bytes, SigningKey, joinSignature, splitSignature, recoverAddress } = utils
 
 function toBytes(...params) {
   const v = []
@@ -12,6 +12,11 @@ function toBytes(...params) {
   }
   return keccak256(concat(v))
 }
+
+
+/**
+    version = 1.0
+*/
 
 async function doSign(info = [], privateKey) {
   try {
@@ -30,10 +35,53 @@ async function doSign(info = [], privateKey) {
   }
 }
 
+/**
+    version = 1.1
+*/
+async function doSignMessage(info = [], privateKey) {
+  try {
+    const bytesData = toBytes(
+      ...info
+    )
+
+    const wallet = new ethers.Wallet(privateKey)
+
+    const signature = await wallet.signMessage(bytesData);
+
+    return signature
+  }
+  catch (error) {
+    console.log(error)
+  }
+}
+
+/**
+    version = 1.0
+*/
 function doRecover(bytesData, signature) {
   try {
     const sig = splitSignature(signature)
     const recovered = recoverAddress(bytesData, sig)
+    return recovered
+  }
+  catch (e) {
+    return null
+  }
+}
+
+/**
+    version = 1.1
+*/
+async function doRecoverSignMessage(bytesData, signature) {
+  try {
+    const sig = utils.splitSignature(signature)
+    let abi = [
+        "function verifyString(string, uint8, bytes32, bytes32) public pure returns (address)"
+    ];
+    let provider = ethers.getDefaultProvider('ropsten');
+    let contractAddress = '0x80F85dA065115F576F1fbe5E14285dA51ea39260';
+    let contract = new Contract(contractAddress, abi, provider);
+    const recovered = await contract.verifyString(bytesData, sig.v, sig.r, sig.s)
     return recovered
   }
   catch (e) {
@@ -46,5 +94,7 @@ function doRecover(bytesData, signature) {
 module.exports = {
   doSign,
   toBytes,
-  doRecover
+  doRecover,
+  doSignMessage,
+  doRecoverSignMessage
 }
